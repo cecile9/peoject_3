@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendify!{% endblock %}
+
+    {% block stylesheets %}
+        <style>
+            #calendar{
+                width: 80%;
+                margin: auto;
+            }
+        </style>
+    {% endblock %}
+
+{% block body %}
+    <div class="container mt5 pt-6" style="padding-top: 60px;">
+
+        <div class="row">
+            <div class="col col-md-3">
+                <div class="mt5 pt-6" id="profile">
+
+                    <form action="/utilisateur-delete/{{ user.id }}" method="post">
+                        <div class="col-auto">
+                            <button type="submit"  class="btn btn-danger mb-3">Supprimer</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="col col-md-9">
+                <div id="calendar">
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+ {% block javascripts %}
+ <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.1/main.min.js" integrity="sha256-rPPF6R+AH/Gilj2aC00ZAuB2EKmnEjXlEWx5MkAp7bw=" crossorigin="anonymous"></script>
+ <script>
+     window.onload = () => {
+     let calendarElt = document.querySelector("#calendar")
+
+     let calendar = new FullCalendar.Calendar(calendarElt, {
+     initialView: 'dayGridMonth',
+     locale: 'fr',
+     timeZone: 'Europe/Paris',
+     headerToolbar: {
+     start: 'prev,next today',
+     center: 'title',
+     end: 'dayGridMonth,timeGridWeek'
+ }
+ })
+
+     calendar.render()
+ }
+ </script>
+
+ {% endblock %}

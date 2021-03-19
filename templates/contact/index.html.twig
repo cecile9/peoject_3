@@ -1,0 +1,56 @@
+
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <div class="container pt-5 mt-5">
+
+        {#    à écrire le script ici!! #}
+        <div class="returnMessage">
+            {% for message in app.flashes('success') %}
+                <p>{{ message }}</p>
+            {%  endfor %}
+        </div>
+        <div>
+            <a href="{{ path('contact_create') }}" class="btn btn-success">Add</a>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Nom complet</th>
+                    <th scope="col">Téléphone</th>
+                    <th scope="col">Opérations</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for contact in contacts %}
+                    <tr>
+                        <th scope="row">{{ contact.id }}</th>
+                        <td>{{ contact.namecomplet}}</td>
+                        <td>{{ contact.telephone}}</td>
+                        <td class="row">
+                            <div class="col">
+                                <a class="btn btn-secondary" href="{{ path('contact_edit', {id:contact.id}) }}">Edit</a>
+                            </div>
+                            <div class="col">
+                                <form >
+                                    <div class="btn btn-danger">Delete</div>
+                                </form>
+                            </div>
+                        </td>
+
+                    </tr>
+
+                {%  endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+    {#   ---fin de script  #}
+
+{% endblock %}

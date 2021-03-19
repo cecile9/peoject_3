@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les utilisateurs{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-5">
+        <div class = "button pt-5">
+            <a href="/utilisateur-create" class="btn btn-success">Add</a>
+        </div>
+
+        <div class="users">
+            {%  for user_ in users %}
+                <p>{{ user_.name }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock %}
