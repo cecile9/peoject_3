@@ -18,11 +18,17 @@
             <div class="col col-md-3">
                 <div class="mt5 pt-6" id="profile">
 
-                    <form action="/utilisateur-delete/{{ user.id }}" method="post">
+                    <form action="/utilisateur-delete/{{ user.id}} " method="post">
                         <div class="col-auto">
                             <button type="submit"  class="btn btn-danger mb-3">Supprimer</button>
                         </div>
                     </form>
+
+                    <div class="events-list">
+                         {% for event in events %}
+                             {{ event.title }}
+                        {% endfor %}
+                    </div>
 
                 </div>
             </div>

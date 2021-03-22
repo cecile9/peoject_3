@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les utilisateurs{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-5">
+
+        <form action="/utilisateur-edit/{{ utilisateur.id }}" method="POST" >
+            <div class="row pt-4">
+                <div class="col  col-md-6">
+                    <input type="text" name="name" class="form-control" placeholder="Name" aria-label="First name" value="{{ utilisateur.name }}">
+                </div>
+                <div class="col col-md-6">
+                    <input type="text" name="displayName" class="form-control" placeholder="DisplayName" aria-label="Last name" value="{{ utilisateur.displayName }}">
+                </div>
+                <div class="col col-md-6">
+                    <input type="text" name="givenName" class="form-control" placeholder="GivenName" aria-label="First name" value="{{ utilisateur.givenName }}">
+                </div>
+                <div class="col col-md-6">
+                    <input type="text" name="company" class="form-control" placeholder="Company" aria-label="Last name" value="{{ utilisateur.company }}">
+                </div>
+                <div class="col col-md-6">
+                    <input type="tel" name="telephoneNumber" class="form-control" placeholder="TéléphoneNumber" aria-label="First name" value="{{ utilisateur.telephoneNumber }}">
+                </div>
+                <div class="col col-md-6">
+                    <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Last name" value="{{ utilisateur.mail }}">
+                </div>
+                <div class="col col-md-6">
+                    <input type="password" name="password" class="form-control" placeholder="password" aria-label="Last name" value="{{ utilisateur.password }}">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Editer</button>
+        </form>
+
+
+        b
+    </div>
+
+{% endblock %}
