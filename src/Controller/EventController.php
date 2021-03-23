@@ -64,38 +64,4 @@ class EventController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/utilisateur-dashboard/{id}", name="utilisateur-dashboard", methods="GET")
-     */
-    public function dashboard(int $id): Response
-    {
-        $doctrinePersistence = $this->getDoctrine();
-        $entityManager = $doctrinePersistence->getManager();
-        $eventRepository = $doctrinePersistence->getRepository(Event::class);
-        $utilisateurRepository = $doctrinePersistence->getRepository(Utilisateur::class);
-        $doctrineConnection = $doctrinePersistence->getConnection('default');
-        $utilisateur = $utilisateurRepository->find($id);
-        if ($utilisateur == null)  {
-            return $this->redirectToRoute('utilisateur-login');
-        }
-        //Que les events de cet utilisateur
-        $events = $eventRepository->findAll();
-        $calendar_events = [];
-        foreach ($events as $event) {
-            $calendar_events = [
-                'title'=> $event->getTitle(),
-                'start'=> $event->getDateStart()->format('Y-m-d H:i'),//2018-09-01 18:02
-                'end'=> $event->getDateEnd()->format('Y-m-d H:i'),
-                'description'=> $event->getDescription(),
-
-            ];
-        }
-
-        //A FAIRE - Con
-        return $this->render('event/dashboard.html.twig' , [
-            'events' => json_encode($calendar_events),
-            'user'=>$utilisateur
-        ]);
-    }
-
 }

@@ -18,11 +18,9 @@
             <div class="col col-md-3">
                 <div class="mt5 pt-6" id="profile">
 
-                    <form action="/utilisateur-delete/{{ user.id}} " method="post">
                         <div class="col-auto">
-                            <button type="submit"  class="btn btn-danger mb-3">Supprimer</button>
+                            <a href="/calendar/new"  class="btn btn-danger mb-3">Ajouter un évènement</a>
                         </div>
-                    </form>
 
                     <div class="events-list">
                          {% for event in events %}
@@ -42,20 +40,25 @@
 {% endblock %}
 
  {% block javascripts %}
+     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.1/main.min.js" integrity="sha256-rPPF6R+AH/Gilj2aC00ZAuB2EKmnEjXlEWx5MkAp7bw=" crossorigin="anonymous"></script>
  <script>
+
+     console.log({{ events | raw }})
      window.onload = () => {
      let calendarElt = document.querySelector("#calendar")
 
      let calendar = new FullCalendar.Calendar(calendarElt, {
-     initialView: 'dayGridMonth',
-     locale: 'fr',
-     timeZone: 'Europe/Paris',
-     headerToolbar: {
-     start: 'prev,next today',
-     center: 'title',
-     end: 'dayGridMonth,timeGridWeek'
- }
+         initialView: 'dayGridMonth',
+         locale: 'fr',
+         timeZone: 'Europe/Paris',
+         events: {{ events|raw }},
+         headerToolbar: {
+         start: 'prev,next today',
+         center: 'title',
+         end: 'dayGridMonth,timeGridWeek',
+
+            }
  })
 
      calendar.render()

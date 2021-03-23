@@ -34,7 +34,7 @@ class HomeController extends AbstractController
             foreach ($utilisateurs as $utilisateur)
             {
                 if($email == $utilisateur->getMail()&& $password == $utilisateur->getPassword()){
-                    return $this->redirectToRoute('utilisateur-dashboard', ["id"=>$utilisateur->getId()]);
+                    return $this->redirectToRoute('calendar-dashboard', ["id"=>$utilisateur->getId()]);
                 }
             }
             $error = "Mot de passe et/ou email incorrect";
