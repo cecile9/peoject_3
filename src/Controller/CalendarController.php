@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Calendar;
-use App\Entity\Event;
-use App\Entity\Utilisateur;
 use App\Form\CalendarType;
 use App\Repository\CalendarRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,13 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/calendar")
- */
+
 class CalendarController extends AbstractController
 {
     /**
-     * @Route("/", name="calendar_index", methods={"GET"})
+     * @Route("/calendars", name="calendar_index", methods={"GET"})
+     * @param CalendarRepository $calendarRepository
+     * @return Response
      */
     public function index(CalendarRepository $calendarRepository): Response
     {
@@ -28,7 +26,9 @@ class CalendarController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="calendar_new", methods={"GET","POST"})
+     * @Route("/calendar/new", name="calendar_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -41,7 +41,7 @@ class CalendarController extends AbstractController
             $entityManager->persist($calendar);
             $entityManager->flush();
 
-            return $this->redirectToRoute('calendar-dashboard');
+            return $this->redirectToRoute('user-calendar-dashboard');
         }
 
         return $this->render('calendar/new.html.twig', [
@@ -51,17 +51,23 @@ class CalendarController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="calendar_show", methods={"GET"})
+     * @Route("/calendar/{id}/show", name="calendar_show", methods={"GET"})
+     * @param Calendar|null $calendar
+     * @return Response
      */
-    public function show(Calendar $calendar): Response
+    public function show(?Calendar $calendar): Response
     {
+        dd("Pas bien du tout");
         return $this->render('calendar/show.html.twig', [
             'calendar' => $calendar,
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="calendar_edit", methods={"GET","POST"})
+     * @Route("/calendar/{id}/edit", name="calendar_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Calendar $calendar
+     * @return Response
      */
     public function edit(Request $request, Calendar $calendar): Response
     {
@@ -81,7 +87,10 @@ class CalendarController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="calendar_delete", methods={"DELETE"})
+     * @Route("/calendar/{id}/delete", name="calendar_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Calendar $calendar
+     * @return Response
      */
     public function delete(Request $request, Calendar $calendar): Response
     {
@@ -96,19 +105,14 @@ class CalendarController extends AbstractController
 
 
     /**
-     * @Route("/dashboard/{id}", name="calendar-dashboard", methods="GET")
+     * @Route("/calendar/dashboard", name="user-calendar-dashboard", methods={"GET"})
      */
-    public function dashboard(int $id): Response
+    public function dashboard(): Response
     {
         $doctrinePersistence = $this->getDoctrine();
         $entityManager = $doctrinePersistence->getManager();
         $calendarRepository = $doctrinePersistence->getRepository(Calendar::class);
-        $utilisateurRepository = $doctrinePersistence->getRepository(Utilisateur::class);
         $doctrineConnection = $doctrinePersistence->getConnection('default');
-        $utilisateur = $utilisateurRepository->find($id);
-        if ($utilisateur == null)  {
-            return $this->redirectToRoute('utilisateur-login');
-        }
         //Que les events de cet utilisateur
         $calendars = $calendarRepository->findAll();
         $calendar_events = [];
@@ -126,7 +130,7 @@ class CalendarController extends AbstractController
         //A FAIRE - Con
         return $this->render('event/dashboard.html.twig' , [
             'events' => json_encode($calendar_events),
-            'user'=>$utilisateur
+            'user'=>$this->getUser()
         ]);
     }
 
