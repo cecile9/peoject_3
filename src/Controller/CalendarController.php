@@ -44,6 +44,8 @@ class CalendarController extends AbstractController
             return $this->redirectToRoute('user-calendar-dashboard');
         }
 
+        dd("On est là");
+
         return $this->render('calendar/new.html.twig', [
             'calendar' => $calendar,
             'form' => $form->createView(),
