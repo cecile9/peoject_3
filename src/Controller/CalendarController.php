@@ -37,14 +37,13 @@ class CalendarController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($calendar);
             $entityManager->flush();
 
             return $this->redirectToRoute('user-calendar-dashboard');
         }
-
-        dd("On est là");
 
         return $this->render('calendar/new.html.twig', [
             'calendar' => $calendar,
@@ -132,6 +131,7 @@ class CalendarController extends AbstractController
         //A FAIRE - Con
         return $this->render('event/dashboard.html.twig' , [
             'events' => json_encode($calendar_events),
+            'calendars' => $calendars,
             'user'=>$this->getUser()
         ]);
     }
