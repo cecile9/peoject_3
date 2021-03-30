@@ -58,14 +58,13 @@ class CalendarController extends AbstractController
      */
     public function show(?Calendar $calendar): Response
     {
-        dd("Pas bien du tout");
         return $this->render('calendar/show.html.twig', [
             'calendar' => $calendar,
         ]);
     }
 
     /**
-     * @Route("/calendar/{id}/edit", name="calendar_edit", methods={"GET","POST"})
+     * @Route("/calendar/{id}/editar", name="calendar_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Calendar $calendar
      * @return Response
@@ -78,7 +77,7 @@ class CalendarController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('calendar_index');
+            return $this->redirectToRoute('user-calendar-dashboard');
         }
 
         return $this->render('calendar/edit.html.twig', [
@@ -101,7 +100,7 @@ class CalendarController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('calendar_index');
+        return $this->redirectToRoute('user-calendar-dashboard');
     }
 
 

@@ -8,15 +8,4 @@
         {{ include('calendar/_form.html.twig', {'button_label': 'Créer'}) }}
         <a href="{{ path('calendar_index') }}">back to list</a>
     </div>
-
-    <ul class="list-group">
-
-        {% for event in celendars %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                A list item
-                <span class="badge bg-primary rounded-pill">14</span>
-            </li>
-        {% endfor %}
-    </ul>
-
 {% endblock %}

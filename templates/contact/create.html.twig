@@ -1,14 +1,27 @@
+{% extends 'base.html.twig' %}
 
-<div class="contactCreate">
+{% block title %}Edit Calendar{% endblock %}
+
+{% block body %}
+    <h1>Créer Contact</h1>
+    <div class="contactCreate">
 
 
-    <div class="contactCreateFormular">
+        <div class="contactCreateFormular">
 
-        {{ form_start(form) }}
+            {{ form_start(form) }}
             {{ form_row(form.namecomplet) }}
             {{ form_row(form.telephone) }}
-            <button type="submit">Créer</button>
-        {{ form_end(form) }}
+            <button class="btn btn-primary" type="submit">Créer</button>
+            {{ form_end(form) }}
 
+        </div>
     </div>
-</div>
+
+
+
+
+
+
+{% endblock %}
+

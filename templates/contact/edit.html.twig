@@ -1,5 +1,17 @@
-{{ if contact_edit is not nul }}
-<title>Bonjour{{ id }}</title>
-{{ endif }}
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Calendar{% endblock %}
+
+{% block body %}
+    <h1>Edit Contact</h1>
+    {{ if contact_edit is not nul }}
+    <title>Bonjour{{ id }}</title>
+    {{ endif }}
+
+
+
+
+{% endblock %}
+
 
 
