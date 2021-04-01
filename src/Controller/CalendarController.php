@@ -21,7 +21,7 @@ class CalendarController extends AbstractController
     public function index(CalendarRepository $calendarRepository): Response
     {
         return $this->render('calendar/index.html.twig', [
-            'calendars' => $calendarRepository->findBy(['user_id'=>$this->getUser()->getId()]),
+            'calendars' => $calendarRepository->findBy(['user'=>$this->getUser()->getId()]),
         ]);
     }
 
@@ -64,7 +64,7 @@ class CalendarController extends AbstractController
     }
 
     /**
-     * @Route("/calendar/{id}/editar", name="calendar_edit", methods={"GET","POST"})
+     * @Route("/calendar/{id}/edit", name="calendar_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Calendar $calendar
      * @return Response
