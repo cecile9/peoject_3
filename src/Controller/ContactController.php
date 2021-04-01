@@ -58,15 +58,41 @@ class ContactController extends AbstractController
 
     /**
      * @Route("/contact/edit/{id}", name="contact_edit", methods={"GET", "POST"})
-     * @param ContactsRepository $contactsRepository
+     * @param Request $request
+     * @param Contacts $contact
      * @return Response
      */
-    public function edit(ContactsRepository $contactsRepository): Response
+    public function edit(Request $request, Contacts $contact): Response
     {
-        $contacts = $contactsRepository->findAll() ;
+        $form   = $this->createForm(ContactType::class,$contact);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash("success", "Modification avec succes");
+
+            return $this->redirectToRoute("contact_index");
+        }
         return $this->render('contact/edit.html.twig', [
-            'contacts' => $contacts,
+            'form'=>$form->createView()
         ]);
+    }
+    /**
+     * @Route("/contact/{id}/delete", name="contact_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Contacts $calendar
+     * @return Response
+     */
+    public function delete(Request $request, Contacts $calendar): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$calendar->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($calendar);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('contact_index');
 
     }
+
+
 }

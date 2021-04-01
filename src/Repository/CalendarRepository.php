@@ -47,4 +47,16 @@ class CalendarRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+    public function findAllByUser($user_id)
+    {
+        $query = $this->createQueryBuilder('c')
+            ->where('c.user = :user_id')
+            ->setParameter('user_id', $user_id)
+            ->orderBy('c.start', 'ASC');
+
+        return $query->getQuery()->execute(); // array of Product
+    }
+
 }

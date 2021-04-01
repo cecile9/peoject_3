@@ -21,7 +21,7 @@ class CalendarController extends AbstractController
     public function index(CalendarRepository $calendarRepository): Response
     {
         return $this->render('calendar/index.html.twig', [
-            'calendars' => $calendarRepository->findAll(),
+            'calendars' => $calendarRepository->findBy(['user_id'=>$this->getUser()->getId()]),
         ]);
     }
 
@@ -37,7 +37,7 @@ class CalendarController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $calendar->setUser($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($calendar);
             $entityManager->flush();
@@ -114,7 +114,7 @@ class CalendarController extends AbstractController
         $calendarRepository = $doctrinePersistence->getRepository(Calendar::class);
         $doctrineConnection = $doctrinePersistence->getConnection('default');
         //Que les events de cet utilisateur
-        $calendars = $calendarRepository->findAll();
+        $calendars = $calendarRepository->findAllByUser($this->getUser()->getId());
         $calendar_events = [];
         foreach ($calendars as $calendar) {
             $calendar_events[] = [

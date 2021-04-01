@@ -11,7 +11,7 @@
             {%  endfor %}
         </div>
         <div>
-            <a href="{{ path('contact_create') }}" class="btn btn-success">Add</a>
+            <a href="{{ path('contact_create') }}" class="btn btn-success">Ajouter</a>
         </div>
 
         <table class="table">
@@ -32,11 +32,13 @@
                         <td>{{ contact.telephone}}</td>
                         <td class="row">
                             <div class="col">
-                                <a class="btn btn-secondary" href="{{ path('contact_edit', {id:contact.id}) }}">Edit</a>
+                                <a class="btn btn-secondary" href="{{ path('contact_edit', {id:contact.id}) }}">Editer</a>
                             </div>
                             <div class="col">
-                                <form >
-                                    <div class="btn btn-danger">Delete</div>
+                                <form action="{{ path('contact_delete', {id:contact.id }) }}" method="POST">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ contact.id) }}">
+                                    <button type="submit" class="btn btn-danger">Supprimer</button>
                                 </form>
                             </div>
                         </td>
