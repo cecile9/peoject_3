@@ -62,27 +62,33 @@
  {% block javascripts %}
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.1/main.min.js" integrity="sha256-rPPF6R+AH/Gilj2aC00ZAuB2EKmnEjXlEWx5MkAp7bw=" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.6.0/locales-all.min.js"></script>
      <script>
+         $(document).ready(function() {
 
-         console.log({{ events | raw }})
-         window.onload = () => {
-         let calendarElt = document.querySelector("#calendar")
+             $('#calendar').fullCalendar({
+                 lang: 'fr'
+             });
 
-         let calendar = new FullCalendar.Calendar(calendarElt, {
-             initialView: 'dayGridMonth',
-             locale: 'fr',
-             timeZone: 'Europe/Paris',
-             events: {{ events|raw }},
-             headerToolbar: {
-             start: 'prev,next today',
-             center: 'title',
-             end: 'dayGridMonth,timeGridWeek',
+         });
 
-                }
-     })
+     {#    window.onload = () => {#}
+     {#    let calendarElt =document.querySelector("#calendar")#}
 
-         calendar.render()
-     }
+     {#    let calendar = new FullCalendar.Calendar(calendarElt, {#}
+     {#        initialView: 'dayGridMonth',#}
+     {#        locale: 'fr',#}
+     {#        timeZone: 'Europe/Paris',#}
+     {#        events: {{ events|raw }},#}
+     {#        headerToolbar: {#}
+     {#            start: 'prev,next today',#}
+     {#            center: 'title',#}
+     {#            end: 'dayGridMonth,timeGridWeek',#}
+     {#        }#}
+     {#   })#}
+
+     {#    calendar.render();#}
+     {#}#}
      </script>
 
  {% endblock %}
