@@ -4,55 +4,113 @@
 
 {% block stylesheets %}
     <style>
+
         #calendar{
             width: 80%;
             margin: auto;
+        }
+
+        /*//contact*/
+        #calendarC {
+            display: flex;
+            flex-direction: row;
+        }
+        /*contact inside */
+        #calendarC .row {
+            min-width: 100%;
+            margin: 0 auto;
+            padding: 0;
+            margin: 0;
+        }
+
+        #calendarC #profile {
+            margin: 0;
+            padding: 0;
+        }
+
+        #calendarC #calendar {
+            margin: 0;
+            padding: 0;
+        }
+        #calendarC #contacts {
+            margin: 0;
+            padding: 0;
+        }
+
+        .event_action {
+            display: flex;
+            flex-direction: row;
         }
     </style>
 {% endblock %}
 
 {% block body %}
-    <div class="container-fluid mt5 pt-6" style="padding-top: 60px;">
+    <div class="container-fluid mt5 pt-6" style="padding-top: 60px;" id="calendarC">
 
         <div class="row">
-            <div class="col col-md-3">
-                <div class="mt5 pt-6" id="profile">
-
+            <div class="col" id="profile">
+                <div class="mt5 pt-6" id="profileIn">
                         <div class="col-auto">
                             <a href="/calendar/new"  class="btn btn-success mb-3">Ajouter un évènement</a>
                         </div>
 
                     <div class="events-list">
-                        <ul class="list-group">
+
+                        <table class="table table-hover">
 
                             {% for calendar in calendars %}
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div class="row">
-                                        <div class="col col-9">
-                                            {{calendar.title}}
-                                        </div>
-                                        <div class="col col-3">
-                                            <a class="btn btn-primary" href="{{ path('calendar_edit', {'id': calendar.id}) }}">Editer</a>
-                                            <a class="btn btn-secondary" href="{{ path('calendar_show', {'id': calendar.id}) }}">Voir plus </a>
 
+                                <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>{{calendar.title}}</td>
+                                    <td class="event_action" >
+                                        <a class="btn btn-primary" href="{{ path('calendar_edit', {'id': calendar.id}) }}">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
+                                        <a class="btn btn-secondary" href="{{ path('calendar_show', {'id': calendar.id}) }}"><i class="far fa-eye"></i></a>
+                                        <form method="post" action="{{ path('calendar_delete', {'id': calendar.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ calendar.id) }}">
+                                            <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                </tbody>
 
-                                            <form method="post" action="{{ path('calendar_delete', {'id': calendar.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ calendar.id) }}">
-                                                <button class="btn btn-danger">Delete</button>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                </li>
                             {% endfor %}
-                        </ul>
+
+                        </table>
+
                     </div>
 
                 </div>
             </div>
-            <div class="col col-md-9">
+            <div class="col ">
                 <div id="calendar">
+                </div>
+            </div>
+            <div class="col" id="contacts">
+                <div >
+                    <h2 class="title">Contacts</h2>
+
+                    <table class="table table-hover">
+                        <tbody>
+                            {% for contact in contacts %}
+                                <tr>
+                                    <td>{{contact.namecomplet}}</td>
+                                    <td>{{contact.telephone}}</td>
+                                    <td class="event_action" >
+                                        <a class="btn btn-primary" href="{{ path('contact_edit', {'id': contact.id}) }}">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+
                 </div>
             </div>
         </div>
@@ -61,34 +119,28 @@
 
  {% block javascripts %}
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.1/main.min.js" integrity="sha256-rPPF6R+AH/Gilj2aC00ZAuB2EKmnEjXlEWx5MkAp7bw=" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.6.0/main.js"></script>
      <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.6.0/locales-all.min.js"></script>
+
      <script>
-         $(document).ready(function() {
 
-             $('#calendar').fullCalendar({
-                 lang: 'fr'
-             });
+         window.onload = () => {
+         let calendarElt =document.querySelector("#calendar")
 
-         });
+         let calendar = new FullCalendar.Calendar(calendarElt, {
+             initialView: 'dayGridMonth',
+             locale: 'fr',
+             timeZone: 'Europe/Paris',
+             events: {{ events|raw }},
+             headerToolbar: {
+                 start: 'prev,next today',
+                 center: 'title',
+                 end: 'dayGridMonth,timeGridWeek',
+             }
+        })
 
-     {#    window.onload = () => {#}
-     {#    let calendarElt =document.querySelector("#calendar")#}
-
-     {#    let calendar = new FullCalendar.Calendar(calendarElt, {#}
-     {#        initialView: 'dayGridMonth',#}
-     {#        locale: 'fr',#}
-     {#        timeZone: 'Europe/Paris',#}
-     {#        events: {{ events|raw }},#}
-     {#        headerToolbar: {#}
-     {#            start: 'prev,next today',#}
-     {#            center: 'title',#}
-     {#            end: 'dayGridMonth,timeGridWeek',#}
-     {#        }#}
-     {#   })#}
-
-     {#    calendar.render();#}
-     {#}#}
+         calendar.render();
+     }
      </script>
 
  {% endblock %}

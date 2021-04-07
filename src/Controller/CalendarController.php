@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Calendar;
 use App\Form\CalendarType;
 use App\Repository\CalendarRepository;
+use App\Repository\ContactsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -107,7 +108,8 @@ class CalendarController extends AbstractController
     /**
      * @Route("/calendar/dashboard", name="user-calendar-dashboard", methods={"GET"})
      */
-    public function dashboard(): Response
+    public function dashboard(
+        ContactsRepository $contactsRepository): Response
     {
         $doctrinePersistence = $this->getDoctrine();
         $entityManager = $doctrinePersistence->getManager();
@@ -131,7 +133,8 @@ class CalendarController extends AbstractController
         return $this->render('event/dashboard.html.twig' , [
             'events' => json_encode($calendar_events),
             'calendars' => $calendars,
-            'user'=>$this->getUser()
+            'user'=>$this->getUser(),
+            'contacts' => $contactsRepository->findAll(),
         ]);
     }
 

@@ -76,6 +76,7 @@ class ContactController extends AbstractController
             'form'=>$form->createView()
         ]);
     }
+
     /**
      * @Route("/contact/{id}/delete", name="contact_delete", methods={"DELETE"})
      * @param Request $request
