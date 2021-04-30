@@ -105,6 +105,7 @@ class CalendarController extends AbstractController
     }
 
 
+
     /**
      * @Route("/calendar/dashboard", name="user-calendar-dashboard", methods={"GET"})
      */
